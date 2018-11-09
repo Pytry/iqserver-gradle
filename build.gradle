@@ -5,44 +5,40 @@ buildscript {
     }
 }
 plugins {
-    id 'io.spring.dependency-management' version "1.0.6.RELEASE"
-//    id "com.github.johnrengelman.plugin-shadow" version "2.0.3"
-    id 'java-gradle-plugin'
     id 'groovy'
+    id 'java-library'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
 }
-group 'org.xitikit.iqserver'
-version '1.0-SNAPSHOT'
+apply from: "${projectDir}/buildSrc/integration-test.gradle"
+apply from: "${projectDir}/buildSrc/functional-test.gradle"
+
+group = 'org.xitikit.iqserver'
+//TODO: use branch semantic versioning
+version = '0.0.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+// Write the plugin's classpath to a file to share with the tests
 repositories {
-    mavenCentral()
     ivy {
         url = 'https://download.sonatype.com'
         layout 'pattern', {
             artifact '[organization]/[module]-[revision].[ext]'
         }
     }
+    mavenCentral()
 }
 
 dependencies {
-    implementation "clm/scanner:nexus-iq-cli:${nexus_iq_cli_version}@jar"
-    gradleApi()    
     localGroovy()
-    // jUnit5 Support
-    gradleTestKit()
-    testImplementation "org.mockito:mockito-core:2.+"
-    testImplementation 'org.mockito:mockito-junit-jupiter:2.18.+'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.+'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.3.+'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.3.+'
-}
-
-test {
-    useJUnitPlatform()
+    compileOnly "clm/scanner:nexus-iq-cli:${nexus_iq_cli_version}@jar"
+    implementation gradleApi()
+    testImplementation gradleTestKit()
 }
 
 jar {
+    /** Create a fat jar**/
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -54,14 +50,44 @@ gradlePlugin {
             id = 'xitikit.iqserver-gradle'
             description 'Provides Extensions and Tasks for Running Security Scans and uploading to a Nexus IQ Server instance.'
             implementationClass = 'org.xitikit.iqserver.gradle.IqServerPlugin'
+            version = project.version
         }
     }
 }
-//
-//publishing {
-//    repositories {
-//        maven {
-//            url = uri("$buildDir/repo")
-//        }
-//    }
-//}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId = "${project.group}" as String
+            artifactId = "${project.name}" as String
+            version = "${project.version}" as String
+
+            pom {
+                name = "${project.name}" as String
+                description = 'Nexus IQ Server Gradle Plugin from Xitikit'
+                url = 'https://github.com/Xitikit/iqserver-gradle'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Keith Hoopes'
+                    }
+                }
+                scm {
+                    connection = 'https://github.com/Xitikit/iqserver-gradle.git'
+                    developerConnection = 'https://github.com/Xitikit/iqserver-gradle.git'
+                    url = 'https://github.com/Xitikit/iqserver-gradle'
+                }
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}

@@ -1,0 +1,24 @@
+sourceSets {
+    integTest {
+        if(project.plugins.hasPlugin(GroovyPlugin)){
+            groovy.srcDir file('src/integTest/groovy')
+        }
+        resources.srcDir file('src/integTest/resources')
+        compileClasspath += sourceSets.main.output + configurations.testRuntime
+        runtimeClasspath += output + compileClasspath
+    }
+}
+task integrationTest(type: Test) {
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integTest.output.classesDirs
+    classpath = sourceSets.integTest.runtimeClasspath
+    mustRunAfter test
+}
+check.dependsOn integrationTest
+
+dependencies {
+    testCompile('org.spockframework:spock-core:1.2-groovy-2.4') {
+        exclude module: 'groovy-all'
+    }
+}

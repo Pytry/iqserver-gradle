@@ -75,7 +75,7 @@ final class IqScanTaskBuilder
 
     private void addAppId(@Nonnull IqScanTask it)
     {
-        if (iqExt.appId = null || iqExt.appId.trim() == '') {
+        if (iqExt.appId == null || iqExt.appId.trim() == '') {
             throw new IllegalArgumentException("'url' is required in 'iqserver'.")
         }
         it.args '-i', "${iqExt.appId}"

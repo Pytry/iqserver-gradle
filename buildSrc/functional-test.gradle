@@ -1,0 +1,29 @@
+sourceSets {
+    funcTest {
+        if(project.plugins.hasPlugin(GroovyPlugin)){
+            groovy.srcDir file('src/funcTest/groovy')
+        }
+        resources.srcDir file('src/funcTest/resources')
+        compileClasspath += sourceSets.main.output + configurations.testRuntime
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+task functionalTest(type: Test) {
+    description = 'Runs the functional tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.funcTest.output.classesDirs
+    classpath = sourceSets.funcTest.runtimeClasspath
+    mustRunAfter test
+}
+check.dependsOn functionalTest
+
+gradlePlugin {
+    testSourceSets sourceSets.funcTest
+}
+
+dependencies{
+    funcTestCompile('org.spockframework:spock-core:1.2-groovy-2.4') {
+        exclude module: 'groovy-all'
+    }
+}
