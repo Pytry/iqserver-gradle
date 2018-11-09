@@ -1,0 +1,67 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.RELEASE'
+        nexus_iq_cli_version = "1.54.0-01"
+    }
+}
+plugins {
+    id 'io.spring.dependency-management' version "1.0.6.RELEASE"
+//    id "com.github.johnrengelman.plugin-shadow" version "2.0.3"
+    id 'java-gradle-plugin'
+    id 'groovy'
+}
+group 'org.xitikit.iqserver'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    ivy {
+        url = 'https://download.sonatype.com'
+        layout 'pattern', {
+            artifact '[organization]/[module]-[revision].[ext]'
+        }
+    }
+}
+
+dependencies {
+    implementation "clm/scanner:nexus-iq-cli:${nexus_iq_cli_version}@jar"
+    gradleApi()    
+    localGroovy()
+    // jUnit5 Support
+    gradleTestKit()
+    testImplementation "org.mockito:mockito-core:2.+"
+    testImplementation 'org.mockito:mockito-junit-jupiter:2.18.+'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.+'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.3.+'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.3.+'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+gradlePlugin {
+    plugins {
+        iqserver {
+            id = 'xitikit.iqserver-gradle'
+            description 'Provides Extensions and Tasks for Running Security Scans and uploading to a Nexus IQ Server instance.'
+            implementationClass = 'org.xitikit.iqserver.gradle.IqServerPlugin'
+        }
+    }
+}
+//
+//publishing {
+//    repositories {
+//        maven {
+//            url = uri("$buildDir/repo")
+//        }
+//    }
+//}
