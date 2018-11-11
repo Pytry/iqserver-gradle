@@ -3,11 +3,11 @@ package org.xitikit.iqserver.gradle.prepare
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskAction
-import org.xitikit.iqserver.gradle.IqServerPluginExtension
+import org.xitikit.iqserver.gradle.IqServerData
 
 class IqRuntimePrepareTask extends DefaultTask
 {
-    IqServerPluginExtension iqExt
+    IqServerData iqExt
 
     @TaskAction
     void copyRuntimeClasspath()

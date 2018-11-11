@@ -2,11 +2,11 @@ package org.xitikit.iqserver.gradle.prepare
 
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskAction
-import org.xitikit.iqserver.gradle.IqServerPluginExtension
+import org.xitikit.iqserver.gradle.IqServerData
 
 class IqScanPrepareTask extends Copy
 {
-    IqServerPluginExtension iqExt
+    IqServerData iqExt
 
     @TaskAction
     void prepare()

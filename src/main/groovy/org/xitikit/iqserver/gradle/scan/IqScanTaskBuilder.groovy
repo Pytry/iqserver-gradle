@@ -1,29 +1,29 @@
 package org.xitikit.iqserver.gradle.scan
 
 import org.gradle.api.Project
-import org.xitikit.iqserver.gradle.IqServerPluginExtension
+import org.xitikit.iqserver.gradle.IqServerData
 
 import javax.annotation.Nonnull
 
 final class IqScanTaskBuilder
 {
     @Nonnull
-    private final Project target
+    private final Project project
 
     @Nonnull
-    private final IqServerPluginExtension iqExt
+    private final IqServerData iqExt
 
     IqScanTaskBuilder(
-        @Nonnull final Project target,
-        @Nonnull final IqServerPluginExtension iqExt)
+        @Nonnull final Project project,
+        @Nonnull final IqServerData iqExt)
     {
-        this.target = target
+        this.project = project
         this.iqExt = iqExt
     }
 
     void buildIqScan()
     {
-        target.getTasks().
+        project.getTasks().
             create(
                 "iqScan",
                 IqScanTask.class,
@@ -46,8 +46,10 @@ final class IqScanTaskBuilder
 
     private void addTarget(final IqScanTask it)
     {
-        if (iqExt.target == null || iqExt.target == '') {
-            it.args "${target.buildDir}/${stripLeadingSlash(iqExt.target)}"
+        if (iqExt.target == null || iqExt.target.trim() == "") {
+            it.args "$project.sourceSets.main.output"
+        }else{
+            it.args "${project.buildDir}/${stripLeadingSlash(iqExt.target)}"
         }
     }
 
@@ -89,7 +91,7 @@ final class IqScanTaskBuilder
         it.args '-s', "${iqExt.url}"
     }
 
-    private static boolean useBasicAuth(@Nonnull IqServerPluginExtension iqExt)
+    private static boolean useBasicAuth(@Nonnull IqServerData iqExt)
     {
         iqExt.password != null &&
             iqExt.password.trim() != '' &&

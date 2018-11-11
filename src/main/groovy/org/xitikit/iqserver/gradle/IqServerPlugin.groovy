@@ -7,6 +7,8 @@ import org.xitikit.iqserver.gradle.scan.IqScanTaskBuilder
 
 import javax.annotation.Nonnull
 
+import static org.xitikit.iqserver.gradle.IqServerDataResolver.*
+
 class IqServerPlugin implements Plugin<Project> {
 
     @Override
@@ -16,25 +18,33 @@ class IqServerPlugin implements Plugin<Project> {
 
     private static configure(
         @Nonnull final Project target,
-        @Nonnull final IqServerPluginExtension iqExt) {
+        @Nonnull final IqServerData iqExt) {
         buildIqScanPrepare(target, iqExt)
         buildIqScan(target, iqExt)
     }
 
-    static void buildIqScanPrepare(final Project target, final IqServerPluginExtension iqExt) {
+    static void buildIqScanPrepare(final Project target, final IqServerData iqExt) {
         new IqScanPrepareTaskBuilder(target, iqExt).buildIqScanPrepare()
     }
 
-    private static IqServerPluginExtension createIqExt(@Nonnull final Project target) {
-        return target.getExtensions().
-            create(
-                "iqserver",
-                IqServerPluginExtension.class)
+    private static IqServerData createIqExt(@Nonnull final Project project) {
+        return resolveIqServerData(
+
+            project,
+            project.getExtensions().
+                create(
+                    "iqserver",
+                    IqServerExtension.class
+                ).iqServerData as IqServerData
+        )
     }
+
+
 
     private static void buildIqScan(
         @Nonnull final Project target,
-        @Nonnull final IqServerPluginExtension iqExt) {
+        @Nonnull final IqServerData iqExt) {
         new IqScanTaskBuilder(target, iqExt).buildIqScan()
     }
 }
+
