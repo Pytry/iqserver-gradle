@@ -1,50 +1,39 @@
 package org.xitikit.iqserver.gradle
 
 import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.xitikit.iqserver.gradle.prepare.IqScanPrepareTaskBuilder
-import org.xitikit.iqserver.gradle.scan.IqScanTaskBuilder
+import org.gradle.api.internal.project.ProjectInternal
+import org.xitikit.iqserver.gradle.scan.IqScanTask
 
 import javax.annotation.Nonnull
 
-import static org.xitikit.iqserver.gradle.IqServerDataResolver.*
-
-class IqServerPlugin implements Plugin<Project> {
+class IqServerPlugin implements Plugin<ProjectInternal> {
 
     @Override
-    void apply(@Nonnull final Project target) {
-        configure(target, createIqExt(target))
-    }
+    void apply(@Nonnull final ProjectInternal project) {
 
-    private static configure(
-        @Nonnull final Project target,
-        @Nonnull final IqServerData iqExt) {
-        buildIqScanPrepare(target, iqExt)
-        buildIqScan(target, iqExt)
-    }
-
-    static void buildIqScanPrepare(final Project target, final IqServerData iqExt) {
-        new IqScanPrepareTaskBuilder(target, iqExt).buildIqScanPrepare()
-    }
-
-    private static IqServerData createIqExt(@Nonnull final Project project) {
-        return resolveIqServerData(
-
+        buildIqScan(
             project,
-            project.getExtensions().
-                create(
-                    "iqserver",
-                    IqServerExtension.class
-                ).iqServerData as IqServerData
-        )
+            createIqServerData(project))
     }
 
-
+    private static IqServerData createIqServerData(@Nonnull final ProjectInternal project) {
+        return project.getExtensions().
+            create(
+                "iqserver",
+                IqServerExtension
+            ).iqServerData
+    }
 
     private static void buildIqScan(
-        @Nonnull final Project target,
-        @Nonnull final IqServerData iqExt) {
-        new IqScanTaskBuilder(target, iqExt).buildIqScan()
+        @Nonnull final ProjectInternal project,
+        @Nonnull final IqServerData iqServerData) {
+        project.tasks.create(
+            "iqScan",
+            IqScanTask,
+            {
+                it.iqServerData = iqServerData
+                it.group = 'verification'
+            })
     }
 }
 

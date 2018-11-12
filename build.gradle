@@ -50,7 +50,7 @@ dependencies {
     testRuntime files(createClasspathManifest)
 }
 test {
-    enabled = false
+    enabled false
 }
 jar {
     /** Create a fat jar**/

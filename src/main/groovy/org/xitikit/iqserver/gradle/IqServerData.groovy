@@ -1,28 +1,76 @@
 package org.xitikit.iqserver.gradle
 
+/**
+ * Holds the configuration data for running scans against Sonatype Nexus IQ Server.
+ * Values set in the "iqserver" dsl can be overwritten with their corresponding gradle property.
+ */
 class IqServerData {
 
-    String url
+    /**
+     * The server url of the IQ Server.
+     * Can be overwritten by "iqserver.url" in gradle.properties,
+     * or by passing '-Piqserver.url=<value>' to the gradle runner.
+     */
 
-    String appId
+    private String url
 
-    String username
+    /**
+     * The application ID as set in IQ Server.
+     * Can be overwritten by "iqserver.appId" in gradle.properties,
+     * or by passing '-Piqserver.appId=<value>' to the gradle runner.
+     */
 
-    String password
+    private String appId
 
-    String phase = 'DEVELOP'
+    /**
+     * The username to use when authenticating against the IQ Server.
+     *
+     * If either the username or password are not provided, then
+     * pki authentication is used instead (ir, the '--pki-authentication'
+     * flag is passed to the scanner.
+     *
+     * Can be overwritten by "iqserver.username" in gradle.properties,
+     * or by passing '-Piqserver.username=<value>' to the gradle runner.
+     */
 
-    String target = 'build/libs'
+    private String username
 
-    boolean compileScan = false
+    /**
+     * The password to use when authenticating against the IQ Server.
+     *
+     * If either the username or password are not provided, then
+     * pki authentication is used instead (ir, the '--pki-authentication'
+     * flag is passed to the scanner.
+     *
+     * Can be overwritten by "iqserver.password" in gradle.properties,
+     * or by passing '-Piqserver.password=<value>' to the gradle runner.
+     */
 
-    boolean runtimeScan = false
+    private String password
 
-    boolean testCompileScan = false
+    /**
+     * The IQ Server phase that the scan should be attached.
+     * Defaults to 'DEVELOP'.
+     */
 
-    boolean testRuntimeScan = false
+    private String phase = 'DEVELOP'
 
-    boolean ignoreGradleProperties = false
+    /**
+     * The path to the directory or archive that should be scanned.
+     * Values are treated as relative to the gradle build directory.
+     * Default value is 'libs'.
+     */
+
+    private String target = 'libs'
+
+    /**
+     * Tells the plugin whether it should ignore values that were not set
+     * in the 'iqserver' dsl. If set to true, then the property values
+     * must be set in the gradle script. Values from the commandline,
+     * project properties, and all properties files will be ignored.
+     */
+
+    private boolean ignoreGradleProperties = false
 
     String getUrl() {
         return url
@@ -70,38 +118,6 @@ class IqServerData {
 
     void setTarget(final String target) {
         this.target = target
-    }
-
-    boolean getCompileScan() {
-        return compileScan
-    }
-
-    void setCompileScan(final boolean compileScan) {
-        this.compileScan = compileScan
-    }
-
-    boolean getRuntimeScan() {
-        return runtimeScan
-    }
-
-    void setRuntimeScan(final boolean runtimeScan) {
-        this.runtimeScan = runtimeScan
-    }
-
-    boolean getTestCompileScan() {
-        return testCompileScan
-    }
-
-    void setTestCompileScan(final boolean testCompileScan) {
-        this.testCompileScan = testCompileScan
-    }
-
-    boolean getTestRuntimeScan() {
-        return testRuntimeScan
-    }
-
-    void setTestRuntimeScan(final boolean testRuntimeScan) {
-        this.testRuntimeScan = testRuntimeScan
     }
 
     boolean getIgnoreGradleProperties() {
