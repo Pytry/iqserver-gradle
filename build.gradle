@@ -9,13 +9,14 @@ plugins {
     id 'java-library'
     id 'java-gradle-plugin'
     id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.10.0'
 }
 apply from: "${projectDir}/buildSrc/integration-test.gradle"
 apply from: "${projectDir}/buildSrc/functional-test.gradle"
 
 group = 'org.xitikit.iqserver'
 //TODO: use branch semantic versioning
-version = '0.0.0-SNAPSHOT'
+version = '0.0.0.M1'
 
 sourceCompatibility = 1.8
 
@@ -65,13 +66,29 @@ jar {
 
 gradlePlugin {
     plugins {
-        iqserver {
+        iqserverPlugin {
             id = 'xitikit.iqserver-gradle'
-            description 'Provides Extensions and Tasks for Running Security Scans and uploading to a Nexus IQ Server instance.'
+            displayName = 'IQ Server Gradle Plugin'
+            description = 'Provides Extensions and Tasks for Running Security Scans and uploading to a Nexus IQ Server instance.'
             implementationClass = 'org.xitikit.iqserver.gradle.IqServerPlugin'
-            version = project.version
         }
     }
+}
+
+pluginBundle {
+    website = 'https://github.com/Xitikit/iqserver-gradle'
+    vcsUrl = 'https://github.com/Xitikit/iqserver-gradle.git'
+    tags = [
+        'sonatype',
+        'lifecycle',
+        'iq server',
+        'oss',
+        'governance',
+        'risk management',
+        'scan',
+        'scanning',
+        'security',
+        'license']
 }
 
 publishing {
