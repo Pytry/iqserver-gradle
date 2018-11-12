@@ -6,6 +6,7 @@ import org.xitikit.iqserver.gradle.IqServerData
 import org.xitikit.iqserver.gradle.IqServerDataValidator
 
 import static org.xitikit.iqserver.gradle.IqServerDataResolver.resolve
+import static org.xitikit.iqserver.gradle.IqServerDataValidator.validate
 import static org.xitikit.iqserver.gradle.scan.IqScanTaskHelper.configure
 
 /**
@@ -26,7 +27,8 @@ class IqScanTask extends JavaExec {
             this,
             iqServerData
         )
-        IqServerDataValidator.validate(this)
+        validate(this)
+
         super.exec()
     }
 
