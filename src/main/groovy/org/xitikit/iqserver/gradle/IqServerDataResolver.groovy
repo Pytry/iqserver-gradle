@@ -4,6 +4,8 @@ import org.gradle.api.Project
 
 import javax.annotation.Nonnull
 
+import static org.xitikit.iqserver.gradle.IqServerExtensionProperties.*
+
 /**
  * Provides resolution between values set in the dsl and project properties.
  */
@@ -47,19 +49,19 @@ final class IqServerDataResolver {
     }
 
     private void resolveUrl() {
-        if (project.hasProperty('iqserver.url')) {
+        if (project.hasProperty(IQ_SERVER_URL)) {
             String url = project.property(
-                'iqserver.url'
+                IQ_SERVER_URL
             ) as String
             iqServerData.setUrl(url)
         }
     }
 
     private void resolveAppId() {
-        if (project.hasProperty('iqserver.appId')) {
+        if (project.hasProperty(IQ_SERVER_APP_ID)) {
             iqServerData.setAppId(
                 project.property(
-                    'iqserver.appId'
+                    IQ_SERVER_APP_ID
                 ) as String
             )
         }
@@ -67,50 +69,50 @@ final class IqServerDataResolver {
 
     private void resolveUsername() {
 
-        if (project.hasProperty('iqserver.username')) {
+        if (project.hasProperty(IQ_SERVER_USERNAME)) {
             iqServerData.setUsername(
                 project.property(
-                    'iqserver.username'
+                    IQ_SERVER_USERNAME
                 ) as String
             )
         }
     }
 
     private void resolvePassword() {
-        if (project.hasProperty('iqserver.password')) {
+        if (project.hasProperty(IQ_SERVER_PASSWORD)) {
             iqServerData.setPassword(
                 project.property(
-                    'iqserver.password'
+                    IQ_SERVER_PASSWORD
                 ) as String
             )
         }
     }
 
     private void resolvePhase() {
-        if (project.hasProperty('iqserver.phase')) {
+        if (project.hasProperty(IQ_SERVER_PHASE)) {
             iqServerData.setPhase(
                 project.property(
-                    'iqserver.phase'
+                    IQ_SERVER_PHASE
                 ) as String
             )
         }
     }
 
     private void resolveTarget() {
-        if (project.hasProperty('iqserver.target')) {
+        if (project.hasProperty(IQ_SERVER_TARGET)) {
             iqServerData.setTarget(
                 project.property(
-                    'iqserver.target'
+                    IQ_SERVER_TARGET
                 ) as String
             )
         }
     }
 
     private void resolveIgnoreGradleProperties() {
-        if (project.hasProperty('iqserver.ignoreGradleProperties')) {
+        if (project.hasProperty(IQ_SERVER_IGNORE_GRADLE_PROPERTIES)) {
             iqServerData.setIgnoreGradleProperties(
                 project.property(
-                    'iqserver.ignoreGradleProperties'
+                    IQ_SERVER_IGNORE_GRADLE_PROPERTIES
                 ) as boolean
             )
         }

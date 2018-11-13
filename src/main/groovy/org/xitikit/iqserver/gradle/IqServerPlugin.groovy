@@ -6,8 +6,9 @@ import org.xitikit.iqserver.gradle.scan.IqScanTask
 
 import javax.annotation.Nonnull
 
-class IqServerPlugin implements Plugin<ProjectInternal> {
+import static org.xitikit.iqserver.gradle.IqServerExtensionProperties.*
 
+class IqServerPlugin implements Plugin<ProjectInternal> {
     @Override
     void apply(@Nonnull final ProjectInternal project) {
 
@@ -19,7 +20,7 @@ class IqServerPlugin implements Plugin<ProjectInternal> {
     private static IqServerData createIqServerData(@Nonnull final ProjectInternal project) {
         return project.getExtensions().
             create(
-                "iqserver",
+                IQ_SERVER,
                 IqServerExtension
             ).iqServerData
     }
@@ -28,11 +29,11 @@ class IqServerPlugin implements Plugin<ProjectInternal> {
         @Nonnull final ProjectInternal project,
         @Nonnull final IqServerData iqServerData) {
         project.tasks.create(
-            "iqScan",
+            IQ_SCAN,
             IqScanTask,
             {
                 it.iqServerData = iqServerData
-                it.group = 'verification'
+                it.group = VERIFICATION
             })
     }
 }
