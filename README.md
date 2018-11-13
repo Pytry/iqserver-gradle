@@ -44,7 +44,7 @@ always run this as part of the build or check tasks.
 build.gradle
 
     plugins{
-      id 'xitikit.iqserver-gradle' version '0.0.0-SNAPSHOT'
+      id 'xitikit.iqserver-gradle' version '0.0.0.M1'
     }
   
     iqserver{
