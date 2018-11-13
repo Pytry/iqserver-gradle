@@ -11,18 +11,17 @@ import static org.xitikit.iqserver.gradle.IqServerExtensionProperties.*
 class IqServerPlugin implements Plugin<ProjectInternal> {
     @Override
     void apply(@Nonnull final ProjectInternal project) {
-
         buildIqScan(
             project,
             createIqServerData(project))
     }
 
     private static IqServerData createIqServerData(@Nonnull final ProjectInternal project) {
-        return project.getExtensions().
-            create(
-                IQ_SERVER,
-                IqServerExtension
-            ).iqServerData
+        project.extensions.create(
+            IQ_SERVER,
+            IqServerExtension,
+            new IqServerData()
+        ).iqServerData
     }
 
     private static void buildIqScan(
