@@ -1,5 +1,6 @@
 package org.xitikit.iqserver.gradle.scan
 
+import org.gradle.api.GradleException
 import org.xitikit.iqserver.gradle.IqServerData
 
 import javax.annotation.Nonnull
@@ -8,6 +9,8 @@ import javax.annotation.Nonnull
  * Helps configure the 'iqScan' with the values set in the dsl or properties.
  */
 final class IqScanTaskHelper {
+
+    private static final String IQ_CLI_CLASSPATH = "com.sonatype.insight.scan.cli.PolicyEvaluatorCli"
 
     private final IqScanTask task
 
@@ -31,10 +34,20 @@ final class IqScanTaskHelper {
     }
 
     private void configureIqScanTask() {
+        checkIfClassExists(IQ_CLI_CLASSPATH)
         buildArgs()
-        task.main = 'com.sonatype.insight.scan.cli.PolicyEvaluatorCli'
+        task.main = IQ_CLI_CLASSPATH
         task.classpath = task.project.buildscript.configurations.classpath
         task.args = this.args
+    }
+
+    private void checkIfClassExists(final String className) {
+        try {
+            Class.forName(className)
+        }
+        catch (ClassNotFoundException ex) {
+            throw new GradleException("IQ Server CLI not accessible", ex.cause)
+        }
     }
 
     private void buildArgs() {
