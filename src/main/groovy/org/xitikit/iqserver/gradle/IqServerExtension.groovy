@@ -6,10 +6,14 @@ class IqServerExtension {
 
     private File outputDir
 
-    private final IqServerData iqServerData = new IqServerData()
+    private final IqServerData iqServerData
+
+    IqServerExtension(final IqServerData iqServerData) {
+        this.iqServerData = iqServerData
+    }
 
     void iqServerData(Action<? super IqServerData> action) {
-        action.execute(iqServerData)
+        action.execute(this.iqServerData)
     }
 
     IqServerData getIqServerData() {
