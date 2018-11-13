@@ -4,6 +4,8 @@ import org.xitikit.iqserver.gradle.scan.IqScanTask
 
 import javax.annotation.Nonnull
 
+import static org.xitikit.iqserver.gradle.IqServerExtensionProperties.*
+
 final class IqServerDataValidator {
 
     private final List<String> errors
@@ -29,28 +31,28 @@ final class IqServerDataValidator {
 
     private IqServerDataValidator url() {
         if (iqServerData.url == null || iqServerData.url.trim() == '') {
-            errors.add("'iqserver.url' is required.")
+            errors.add("'${IQ_SERVER_URL}' is required.")
         }
         this
     }
 
     private IqServerDataValidator appId() {
         if (iqServerData.appId == null || iqServerData.appId.trim() == '') {
-            errors.add("'iqserver.appId' is required.")
+            errors.add("'${IQ_SERVER_APP_ID}' is required.")
         }
         this
     }
 
     private IqServerDataValidator phase() {
         if (iqServerData.phase == null || iqServerData.phase.trim() == '') {
-            errors.add("'iqserver.phase' is required.")
+            errors.add("'${IQ_SERVER_PHASE}' is required.")
         }
         this
     }
 
     private IqServerDataValidator target() {
         if (iqServerData.target == null || iqServerData.target.trim() == '') {
-            errors.add("'iqserver.phase' is required.")
+            errors.add("'${IQ_SERVER_TARGET}' is required.")
         }
         this
     }
