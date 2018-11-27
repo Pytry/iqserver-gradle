@@ -45,14 +45,17 @@ task createClasspathManifest {
 
 dependencies {
     compileOnly "clm/scanner:nexus-iq-cli:${nexus_iq_cli_version}@jar"
+    implementation 'com.sonatype.nexus:nexus-platform-api:3.3.20181025-095610.1ce86ad'
     implementation localGroovy()
     implementation gradleApi()
     testImplementation gradleTestKit()
     testRuntime files(createClasspathManifest)
 }
+
 test {
     enabled false
 }
+
 jar {
     /** Create a fat jar**/
     from {

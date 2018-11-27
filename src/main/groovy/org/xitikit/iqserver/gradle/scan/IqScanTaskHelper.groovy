@@ -41,7 +41,7 @@ final class IqScanTaskHelper {
         task.args = this.args
     }
 
-    private void checkIfClassExists(final String className) {
+    private static void checkIfClassExists(final String className) {
         try {
             Class.forName(className)
         }
@@ -62,8 +62,9 @@ final class IqScanTaskHelper {
         if (iqServerData.target == null || iqServerData.target.trim() == "") {
             args.add("$task.sourceSets.main.output" as String)
         } else {
-            args.add("${task.project.buildDir}/${stripLeadingSlash(iqServerData.target)}" as String)
+
         }
+        args.add("${iqServerData.target}" as String)
     }
 
     private void buildPhase() {

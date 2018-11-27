@@ -106,6 +106,9 @@ final class IqServerDataResolver {
                 ) as String
             )
         }
+        else{
+            iqServerData.setTarget("${project.rootProject.buildDir}/libs")
+        }
     }
 
     private void resolveIgnoreGradleProperties() {

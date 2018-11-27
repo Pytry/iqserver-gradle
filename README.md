@@ -7,6 +7,7 @@ The author is still new to groovy, spoc, and testing gradle plugins in general, 
 
 It works by downloading the configured version of the nexus-iq-server-cli tool, and wrapping it in a gradle "JavaExec" task.
 
+To use this project, you will need to build and publish it to your local; maven repository.
 ## DSL
 
 'xitikit.iqserver-gradle' provides an 'iqserver' dsl. Every property that is made available can be overwritten 
